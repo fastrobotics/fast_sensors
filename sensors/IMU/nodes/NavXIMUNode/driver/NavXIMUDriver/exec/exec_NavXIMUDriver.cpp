@@ -1,4 +1,5 @@
 #include <chrono>
+#include <csignal>
 
 #include "NavXIMUDriver.h"
 using namespace fast_sensors;
@@ -9,7 +10,14 @@ void printHelp() {
     printf("-d Device.  Default: /dev/ttyACM0\n");
     printf("-l Logger Threshold. [DEBUG,INFO,NOTICE,WARN,ERROR]\n");
 }
+void signalinterrupt_handler(int sig) {
+    printf("Killing NavXIMU Driver with Signal: %d\n", sig);
+    driver.finish();
+    exit(0);
+}
 int main(int argc, char* argv[]) {
+    signal(SIGINT, signalinterrupt_handler);
+    signal(SIGTERM, signalinterrupt_handler);
     std::string logger_threshold = "DEBUG";
     std::string device = "/dev/ttyUSB0";
     for (;;) {
@@ -39,7 +47,7 @@ int main(int argc, char* argv[]) {
                                           eros::Level::Type::INFO,
                                           "Initializing");
     logger->log_debug("Starting NavXIMU Driver");
-
+    printf("comm: %s\n", device.c_str());
     driver.init(diag, logger);
     if (driver.set_comm_device(device, B115200) == false) {
         logger->log_error("Error Initializing Driver.  Exiting.");

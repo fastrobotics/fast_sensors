@@ -6,6 +6,7 @@ NavXIMUDriver::~NavXIMUDriver() {
     finish();
 }
 bool NavXIMUDriver::finish() {
+    close(fd);
     return true;
 }
 bool NavXIMUDriver::init(eros::eros_diagnostic::Diagnostic diagnostic_, eros::Logger* logger_) {
@@ -37,6 +38,7 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
             logger->log_diagnostic(diag);
             return diag;
         }
+        logger->log_debug(std::string(buffer, n));
         diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
         diag.level = eros::Level::Type::INFO;
         diag.message = eros::eros_diagnostic::Message::NOERROR;
