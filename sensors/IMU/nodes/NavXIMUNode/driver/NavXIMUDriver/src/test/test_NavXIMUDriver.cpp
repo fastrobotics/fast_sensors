@@ -7,6 +7,7 @@
 using namespace eros;
 using namespace ros_hats;
 using namespace ros_hats;
+packet = '!y-029.08 007.36 000.70 181.9U7E3';
 TEST(BasicTest, TestDefinitions) {
     for (uint8_t i = 0; i <= (uint8_t)NavXIMUDriver::StatusType::END_OF_LIST; ++i) {
         if ((i == (uint8_t)NavXIMUDriver::StatusType::UNKNOWN) ||

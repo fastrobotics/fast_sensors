@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
         logger->log_error("Error Initializing Driver.  Exiting.");
         return 1;
     }
-    double delta_time_sec = 0.1;
+    double delta_time_sec = 0.01;
     while (true) {
         auto current_time = std::chrono::system_clock::now();
         auto duration_in_seconds = std::chrono::duration<double>(current_time.time_since_epoch());
@@ -62,7 +62,7 @@ int main(int argc, char* argv[]) {
         driver.update(current_time_sec, delta_time_sec);
         usleep(delta_time_sec * 1000000);
 
-        logger->log_debug(driver.pretty());
+        // logger->log_debug(driver.pretty());
     }
 
     logger->log_debug("NavXIMU Driver Finished.");
