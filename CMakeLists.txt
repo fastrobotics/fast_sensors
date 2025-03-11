@@ -29,7 +29,7 @@ catkin_package(
 
 #)
 #add_subdirectory(src)
-add_subdirectory(sensors)
+add_subdirectory(nodes)
 # Doxygen
 
 # look for Doxygen package

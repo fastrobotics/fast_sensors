@@ -8,9 +8,7 @@
  *
  */
 #pragma once
-#include <eros/Logger.h>
-#include <eros_utility/ConvertUtility.h>
-#include <eros_utility/PrettyUtility.h>
+
 #include <errno.h>
 #include <fcntl.h>
 #include <termios.h>
@@ -19,13 +17,15 @@
 #include <cstring>
 #include <iostream>
 
+#include "BaseIMUDriver.h"
+
 //! fast_sensors Namespace
 namespace fast_sensors {
 /**
  * @brief NavXIMUDriver Class
  * @details
  */
-class NavXIMUDriver
+class NavXIMUDriver : public BaseIMUDriver
 {
    public:
     NavXIMUDriver();
@@ -37,8 +37,8 @@ class NavXIMUDriver
      * @return true
      * @return false
      */
-    bool init(eros::eros_diagnostic::Diagnostic diagnostic, eros::Logger* logger);
-    eros::eros_diagnostic::Diagnostic update(double current_time_sec, double dt);
+    bool init(eros::eros_diagnostic::Diagnostic diagnostic, eros::Logger* logger) override;
+    eros::eros_diagnostic::Diagnostic update(double current_time_sec, double dt) override;
 
     bool set_comm_device(std::string comm_device, int speed);
     /**
@@ -47,14 +47,11 @@ class NavXIMUDriver
      * @return true
      * @return false
      */
-    bool finish();
-    std::string pretty(std::string mode = "");
+    bool finish() override;
+    std::string pretty(std::string mode = "") override;
     int readFromSerialPort(char* buffer, size_t size);
 
    private:
-    eros::Logger* logger;
-    eros::eros_diagnostic::Diagnostic diagnostic;
-    bool fully_initialized{false};
     std::string comm_device_;
     int fd;
 

@@ -10,16 +10,14 @@ bool NavXIMUDriver::finish() {
     return true;
 }
 bool NavXIMUDriver::init(eros::eros_diagnostic::Diagnostic diagnostic_, eros::Logger* logger_) {
-    diagnostic = diagnostic_;
-    if (logger_ != nullptr) {
-        logger = logger_;
-        return true;
-    }
-
-    return true;
+    return BaseIMUDriver::init(_diagnostic, _logger);
 }
 eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec, double dt) {
-    auto diag = diagnostic;
+    auto diag = BaseSonarArrayNodeDriver::update(current_time_sec, dt);
+    if (diag.level >= eros::Level::Type::ERROR) {
+        logger->log_diagnostic(diag);
+        return diag;
+    }
     char buffer[30];
 
     int n = readFromSerialPort(buffer, sizeof(buffer) - 1);
@@ -52,6 +50,7 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
 std::string NavXIMUDriver::pretty(std::string mode) {
     std::string str = "NavX IMU Node Driver";
     str += " Comm Device: " + comm_device_ + "\n";
+    str += BaseIMUDriver::pretty(mode);
     return str;
 }
 bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
