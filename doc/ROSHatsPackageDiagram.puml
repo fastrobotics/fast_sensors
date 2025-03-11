@@ -1,0 +1,7 @@
+@startuml
+title FAST Sensors Package Diagram
+
+package fast_sensors {
+}
+
+@enduml
