@@ -47,7 +47,6 @@ int main(int argc, char* argv[]) {
                                           eros::Level::Type::INFO,
                                           "Initializing");
     logger->log_debug("Starting NavXIMU Driver");
-    printf("comm: %s\n", device.c_str());
     driver.init(diag, logger);
     if (driver.set_comm_device(device, B115200) == false) {
         logger->log_error("Error Initializing Driver.  Exiting.");

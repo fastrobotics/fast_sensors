@@ -10,10 +10,10 @@ bool NavXIMUDriver::finish() {
     return true;
 }
 bool NavXIMUDriver::init(eros::eros_diagnostic::Diagnostic diagnostic_, eros::Logger* logger_) {
-    return BaseIMUDriver::init(_diagnostic, _logger);
+    return BaseIMUDriver::init(diagnostic_, logger_);
 }
 eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec, double dt) {
-    auto diag = BaseSonarArrayNodeDriver::update(current_time_sec, dt);
+    auto diag = BaseIMUDriver::update(current_time_sec, dt);
     if (diag.level >= eros::Level::Type::ERROR) {
         logger->log_diagnostic(diag);
         return diag;
@@ -37,12 +37,21 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
             return diag;
         }
         // logger->log_debug(buffer);
-        printf("%s", buffer);
-        // logger->log_debug(std::string(buffer, n));
-        diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
-        diag.level = eros::Level::Type::INFO;
-        diag.message = eros::eros_diagnostic::Message::NOERROR;
-        diag.description = "";
+        NavXIMUPacketParser::ParsedPacket packet = NavXIMUPacketParser::parsePacket(buffer);
+        if (packet.parsed_ok == true) {
+            packet.time_stamp = ros::Time::now();
+            latest_packet = packet;
+            diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
+            diag.level = eros::Level::Type::INFO;
+            diag.message = eros::eros_diagnostic::Message::NOERROR;
+            diag.description = "";
+        }
+        else {
+            diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
+            diag.level = eros::Level::Type::WARN;
+            diag.message = eros::eros_diagnostic::Message::DROPPING_PACKETS;
+            diag.description = "Unable to parse Packet: " + std::string(buffer, n);
+        }
         diagnostic = diag;
         return diag;
     }
@@ -92,9 +101,9 @@ bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
         10;  // Wait for up to 1s (10 deciseconds), returning as soon as any data is received.
     tty.c_cc[VMIN] = 0;
 
-    // Set in/out baud rate to be 9600
-    cfsetispeed(&tty, B115200);
-    cfsetospeed(&tty, B115200);
+    // Set in/out baud rate to be 115200
+    cfsetispeed(&tty, speed);
+    cfsetospeed(&tty, speed);
     if (tcsetattr(fd, TCSANOW, &tty) != 0) {
         logger->log_error(strerror(errno));
         return false;
@@ -105,5 +114,16 @@ bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
 }
 int NavXIMUDriver::readFromSerialPort(char* buffer, size_t size) {
     return read(fd, buffer, size);
+}
+geometry_msgs::QuaternionStamped NavXIMUDriver::get_orientation() {
+    geometry_msgs::QuaternionStamped orientation;
+    orientation.header.stamp = latest_packet.time_stamp;
+    orientation.header.frame_id = "imu";
+    tf2::Quaternion quat;
+    quat.setRPY(latest_packet.roll_deg * M_PI / 180.0,
+                latest_packet.pitch_deg * M_PI / 180.0,
+                latest_packet.yaw_deg * M_PI / 180.0);
+    orientation.quaternion = tf2::toMsg(quat);
+    return orientation;
 }
 }  // namespace fast_sensors

@@ -1,8 +1,9 @@
 /**
- * @file GPSHatNode.h
- * @author David Gitz
- * @brief  GPS Hat Node
- * @date 2025-02-21
+ * @file IMUNode.h
+ * @author your name (you@domain.com)
+ * @brief
+ * @version 0.1
+ * @date 2025-03-11
  *
  * @copyright Copyright (c) 2025
  *
@@ -15,17 +16,17 @@
 // Project
 #include <eros/BaseNode.h>
 
-#include "GPSHatNodeProcess.h"
-namespace ros_hats {
+#include "IMUNodeProcess.h"
+namespace fast_sensors {
 /**
- * @brief GPSHatNode
+ * @brief
  *
  */
-class GPSHatNode : public eros::BaseNode
+class IMUNode : public eros::BaseNode
 {
    public:
     /*! \brief The base name of the Node.*/
-    const std::string BASE_NODE_NAME = "gps_hat_node";
+    const std::string BASE_NODE_NAME = "imu_node";
 
     /*! \brief The Major Release Version of the Node.*/
     const uint16_t MAJOR_RELEASE_VERSION = 0;
@@ -37,7 +38,7 @@ class GPSHatNode : public eros::BaseNode
     const uint16_t BUILD_NUMBER = 1;
 
     /*! \brief A Description of the Firmware.*/
-    const std::string FIRMWARE_DESCRIPTION = "Latest Rev: 21-Feb-2025";
+    const std::string FIRMWARE_DESCRIPTION = "Latest Rev: 11-Mar-2025";
 
     /*! \brief What System this Node falls under.*/
     const eros::System::MainSystem DIAGNOSTIC_SYSTEM = eros::System::MainSystem::ROVER;
@@ -47,9 +48,9 @@ class GPSHatNode : public eros::BaseNode
 
     /*! \brief What Component this Node falls under.*/
     const eros::System::Component DIAGNOSTIC_COMPONENT = eros::System::Component::POSE;
-    GPSHatNode();
-    ~GPSHatNode();
-    GPSHatNodeProcess* get_process() {
+    IMUNode();
+    ~IMUNode();
+    IMUNodeProcess* get_process() {
         return process;
     }
     bool start();
@@ -73,9 +74,8 @@ class GPSHatNode : public eros::BaseNode
 
    private:
     eros::eros_diagnostic::Diagnostic read_launchparameters();
-    GPSHatNodeProcess* process;
+    IMUNodeProcess* process;
     actionlib::SimpleActionServer<eros::system_commandAction> system_command_action_server;
-    ros::Publisher gps_data_pub;
-    ros::Publisher gps_pose_pub;
+    ros::Publisher imu_pose_pub;
 };
-}  // namespace ros_hats
+}  // namespace fast_sensors

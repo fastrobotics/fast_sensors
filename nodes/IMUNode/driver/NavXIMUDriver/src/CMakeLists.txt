@@ -1,3 +1,5 @@
-add_library(NavXIMUDriver NavXIMUDriver.cpp)
-target_link_libraries(NavXIMUDriver ${catkin_LIBRARIES} baseIMUDriver)
-#add_subdirectory(test)
+add_library(navXIMUPacketParser NavXIMUPacketParser.cpp)
+
+add_library(navXIMUDriver NavXIMUDriver.cpp)
+target_link_libraries(navXIMUDriver ${catkin_LIBRARIES} baseIMUDriver navXIMUPacketParser)
+add_subdirectory(test)

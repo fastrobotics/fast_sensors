@@ -1,7 +1,7 @@
-add_library(gpsHatNodeProcess GPSHatNodeProcess.cpp)
-target_link_libraries(gpsHatNodeProcess ${catkin_LIBRARIES} baseNodeProcess NavXIMUDriver utmConversion)
+add_library(imuNodeProcess IMUNodeProcess.cpp)
+target_link_libraries(imuNodeProcess ${catkin_LIBRARIES} baseNodeProcess navXIMUDriver )
 
-add_executable(gps_hat_node GPSHatNode.cpp) 
-target_link_libraries(gps_hat_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} gpsHatNodeProcess baseNode   )
-add_dependencies(gps_hat_node ${eros_EXPORTED_TARGETS})
-add_subdirectory(test)
+add_executable(imu_node IMUNode.cpp) 
+target_link_libraries(imu_node ${catkin_LIBRARIES} ${Boost_LIBRARIES} imuNodeProcess baseNode   )
+add_dependencies(imu_node ${eros_EXPORTED_TARGETS})
+#add_subdirectory(test)

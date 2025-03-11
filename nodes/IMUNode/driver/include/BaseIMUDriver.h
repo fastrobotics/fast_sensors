@@ -14,6 +14,7 @@
 namespace fast_sensors {
 class BaseIMUDriver : public IIMUDriver
 {
+   public:
     BaseIMUDriver() {
     }
     virtual ~BaseIMUDriver() {

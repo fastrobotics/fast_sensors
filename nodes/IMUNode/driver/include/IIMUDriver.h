@@ -10,27 +10,36 @@
  */
 
 #include <eros/Logger.h>
+#include <eros_diagnostic/Diagnostic.h>
+#include <eros_diagnostic/DiagnosticUtility.h>
 #include <eros_utility/ConvertUtility.h>
 #include <eros_utility/PrettyUtility.h>
+
+#include "geometry_msgs/QuaternionStamped.h"
 
 #pragma once
 namespace fast_sensors {
 class IIMUDriver
 {
    public:
-    NavXIMUDriver();
-    virtual ~NavXIMUDriver();
+    IIMUDriver() {
+    }
+    virtual ~IIMUDriver() {
+    }
     /**
      * @brief Initialize the IMU Driver Driver
      *
+     * @param diagnostic
      * @param logger
      * @return true
      * @return false
      */
     virtual bool init(eros::eros_diagnostic::Diagnostic diagnostic, eros::Logger* logger) = 0;
+    virtual bool set_comm_device(std::string comm_device, int speed) = 0;
     virtual eros::eros_diagnostic::Diagnostic update(double current_time_sec, double dt) = 0;
 
     virtual bool finish() = 0;
     virtual std::string pretty(std::string mode = "") = 0;
+    virtual geometry_msgs::QuaternionStamped get_orientation() = 0;
 };
 }  // namespace fast_sensors
