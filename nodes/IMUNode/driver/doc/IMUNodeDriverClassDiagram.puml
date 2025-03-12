@@ -1,0 +1,39 @@
+@startuml
+title IMU Node Driver Class Diagram
+package eros {
+    class Logger
+    class Level
+    namespace eros_diagnostic {
+        class Diagnostic
+    }
+}
+
+
+namespace fast_sensors {
+    interface IIMUDriver #Yellow {
+        +{abstract} bool init(Diagnostic diagnostic,Logger logger)
+        +{abstract} bool is_fully_initialized()
+        +{abstract} Diagnostic update(double current_time_sec, double dt)
+        +{abstract} bool finish()
+        +{abstract} string pretty(string mode)
+    }
+    abstract BaseIMUDriver #Yellow {
+        +bool init(Diagnostic diagnostic,Logger logger)
+        +bool is_fully_initialized()
+        +Diagnostic update(double current_time_sec, double dt)
+        +string pretty(string mode)
+        #Diagnostic diagnostic
+        #Logger logger
+
+    }
+    IIMUDriver <|.. BaseIMUDriver
+    class NavXIMUDriver #Yellow {
+        +bool init(Diagnostic diagnostic,Logger logger)
+        +Diagnostic update(double current_time_sec, double dt)
+        +string pretty(string mode)
+        +bool finish()
+    }
+    BaseIMUDriver <|-- NavXIMUDriver
+
+}
+@enduml

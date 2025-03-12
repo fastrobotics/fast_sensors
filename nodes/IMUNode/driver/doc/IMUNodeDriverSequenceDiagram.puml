@@ -1,0 +1,32 @@
+@startuml
+title IMU Node Driver Sequence Diagram
+actor User as user
+participant IIMUDriver as interface
+participant BaseIMUDriver as base
+participant NavXIMUDriver as driver
+
+alt initialize
+activate user
+user -> interface++: init(Diagnostic diagnostic, Logger logger)
+interface -> driver++: init(Diagnostic diagnostic,Logger logger)
+driver -> base++: init(Diagnostic diagnostic, Logger, logger)
+base --> driver--: status
+driver --> interface--: status
+interface --> user--: status
+
+user -> driver++: set_comm_device(string port_name, int baud_rate)
+driver -> driver: fully_initialized = true
+driver --> user--: status
+end
+
+alt update
+user -> interface++: update(double current_time, double dt)
+interface -> driver++: update(double current_time, double dt)
+driver -> base++: update(double current_time, doublt dt)
+base --> driver--: diagnostic
+driver -> driver: readFromSerialPort()
+driver --> interface--: diagnostic
+interface --> user--: diagnostic
+end
+
+@enduml
