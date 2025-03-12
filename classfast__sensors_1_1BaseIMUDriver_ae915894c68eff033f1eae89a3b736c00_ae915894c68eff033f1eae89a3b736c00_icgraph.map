@@ -1,0 +1,4 @@
+<map id="fast_sensors::BaseIMUDriver::init" name="fast_sensors::BaseIMUDriver::init">
+<area shape="rect" id="node1" title="Initialize the IMU Driver Driver." alt="" coords="267,5,477,47"/>
+<area shape="rect" id="node2" href="$classfast__sensors_1_1NavXIMUDriver_aece768a9152f707f2f72b34d7ca7afa6.html#aece768a9152f707f2f72b34d7ca7afa6" title="Initialize NavX IMU Driver." alt="" coords="5,5,219,47"/>
+</map>

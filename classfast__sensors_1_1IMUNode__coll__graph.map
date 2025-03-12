@@ -1,0 +1,7 @@
+<map id="fast_sensors::IMUNode" name="fast_sensors::IMUNode">
+<area shape="rect" id="node1" title=" " alt="" coords="41,184,213,211"/>
+<area shape="rect" id="node2" title=" " alt="" coords="5,95,129,121"/>
+<area shape="rect" id="node3" href="$classfast__sensors_1_1IMUNodeProcess.html" title=" " alt="" coords="153,95,376,121"/>
+<area shape="rect" id="node4" title=" " alt="" coords="76,5,251,32"/>
+<area shape="rect" id="node5" href="$classfast__sensors_1_1IIMUDriver.html" title=" " alt="" coords="275,5,457,32"/>
+</map>

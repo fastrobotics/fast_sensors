@@ -1,0 +1,5 @@
+<map id="fast_sensors::NavXIMUDriver" name="fast_sensors::NavXIMUDriver">
+<area shape="rect" id="node1" title="NavXIMUDriver Class." alt="" coords="5,155,219,181"/>
+<area shape="rect" id="node2" href="$classfast__sensors_1_1BaseIMUDriver.html" title=" " alt="" coords="7,80,217,107"/>
+<area shape="rect" id="node3" href="$classfast__sensors_1_1IIMUDriver.html" title=" " alt="" coords="21,5,203,32"/>
+</map>
