@@ -2,6 +2,10 @@
 title FAST Sensors Package Diagram
 
 package fast_sensors {
+    class IMUNode #Yellow
+
+    class NavXIMUDriver #Yellow
+    IMUNode --> NavXIMUDriver
 }
 
 @enduml
