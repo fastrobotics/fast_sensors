@@ -1,8 +1,8 @@
 @startuml
-title GPS Hat Node Sequence Diagram
+title IMU Node Sequence Diagram
 actor User as user
-participant GPSHatNode as node
-participant GPSHatNodeProcess as process
+participant IMUNode as node
+participant IMUNodeProcess as process
 participant NavXIMUDriver as driver
 participant Logger as logger
 
@@ -10,7 +10,7 @@ alt initialize
     activate node
     node -> node++: start()
     node -> node: initialize_diagnostic
-    node -> process++: GPSHatNodeProcess()
+    node -> process++: IMUNodeProcess()
     node -> node: preinitialize_basenode()
     node -> process: enable_diagnostics()
     node -> process++: finish_initialization()

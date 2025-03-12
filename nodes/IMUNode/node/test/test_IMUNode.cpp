@@ -3,12 +3,12 @@
 #include <gtest/gtest.h>
 #include <ros/ros.h>
 
-#include "../GPSHatNode.h"
+#include "../IMUNode.h"
 
 using namespace eros;
 
 std::string robot_namespace = "/test/";
-std::string unittest_nodename = "gps_hat_node";
+std::string unittest_nodename = "imu_node";
 typedef actionlib::SimpleActionClient<eros::system_commandAction> CommandActionClient;
 uint64_t heartbeat_count = 0;
 eros::heartbeat latest_heartbeat;
@@ -18,7 +18,7 @@ void heartbeat_Callback(const eros::heartbeat& msg) {
 }
 TEST(GPSHatNode, TestBasics) {
     ros::NodeHandle nh("~");
-    Logger* logger = new Logger("DEBUG", "test_GPSHatNode");
+    Logger* logger = new Logger("DEBUG", "test_IMUNode");
     logger->enable_ROS_logger();
     std::string heartbeat_topic = robot_namespace + unittest_nodename + "/heartbeat";
     ros::Subscriber sub = nh.subscribe(heartbeat_topic, 100, &heartbeat_Callback);
@@ -72,7 +72,7 @@ TEST(GPSHatNode, TestBasics) {
 }
 int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
-    ros::init(argc, argv, "test_GPSHatNode");
+    ros::init(argc, argv, "test_IMUNode");
     ros::AsyncSpinner spinner(1);
     spinner.start();
     int ret = RUN_ALL_TESTS();
