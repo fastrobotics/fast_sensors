@@ -111,7 +111,7 @@ bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
         logger->log_error(strerror(errno));
         return false;
     }
-    // Send Configuration Request.  NOT Working!!!  Create Bug!
+    // Send Configuration Request. Not Working, investigate during #1466
     if (0) {
         for (int i = 0; i < 50; ++i) {
             unsigned char msg[] = {0x23, 0x70, 0x01, 0x0A, 0x0D};
