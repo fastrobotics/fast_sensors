@@ -141,6 +141,9 @@ bool IMUNode::run_loop2() {
     return true;
 }
 bool IMUNode::run_loop3() {
+    process->update(0.02, ros::Time::now().toSec());
+    imu_pose_pub.publish(process->get_pose());
+    return true;
     return true;
 }
 bool IMUNode::run_001hz() {
@@ -159,6 +162,7 @@ std::string IMUNode::pretty() {
     return str;
 }
 bool IMUNode::run_1hz() {
+    logger->log_debug(pretty());
     std::vector<eros::eros_diagnostic::Diagnostic> latest_diagnostics =
         process->get_latest_diagnostics();
     for (std::size_t i = 0; i < latest_diagnostics.size(); ++i) {
@@ -185,11 +189,8 @@ bool IMUNode::run_1hz() {
     return true;
 }
 bool IMUNode::run_10hz() {
-    process->update(0.1, ros::Time::now().toSec());
     update_diagnostics(process->get_diagnostics());
     update_ready_to_arm(process->get_ready_to_arm());
-
-    imu_pose_pub.publish(process->get_pose());
     return true;
 }
 void IMUNode::thread_loop() {

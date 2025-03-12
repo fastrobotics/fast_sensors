@@ -21,7 +21,6 @@ eros::eros_diagnostic::Diagnostic BaseIMUDriver::update(double current_time_sec,
     double elap_time = current_time_sec - prev_current_time_sec;
 
     run_time += elap_time;
-    logger->log_debug(std::to_string(elap_time) + "," + std::to_string(dt));
     prev_current_time_sec = current_time_sec;
     // NO Practical way to Unit Test this
     // GCOVR_EXCL_START

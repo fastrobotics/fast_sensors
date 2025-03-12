@@ -62,6 +62,8 @@ class NavXIMUDriver : public BaseIMUDriver
     std::string comm_device_;
     int fd;
     NavXIMUPacketParser::ParsedPacket latest_packet;
+    uint64_t good_packet_count{0};
+    uint64_t bad_packet_count{0};
 
 };  // namespace fast_sensors
 }  // namespace fast_sensors

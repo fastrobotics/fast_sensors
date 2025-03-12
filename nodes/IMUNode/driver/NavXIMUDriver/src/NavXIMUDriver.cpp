@@ -18,7 +18,7 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
         logger->log_diagnostic(diag);
         return diag;
     }
-    char buffer[30];
+    char buffer[100];
 
     int n = readFromSerialPort(buffer, sizeof(buffer) - 1);
     if (n < 0) {
@@ -36,9 +36,9 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
             logger->log_diagnostic(diag);
             return diag;
         }
-        // logger->log_debug(buffer);
         NavXIMUPacketParser::ParsedPacket packet = NavXIMUPacketParser::parsePacket(buffer);
         if (packet.parsed_ok == true) {
+            good_packet_count++;
             packet.time_stamp = ros::Time::now();
             latest_packet = packet;
             diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
@@ -47,10 +47,11 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
             diag.description = "";
         }
         else {
+            bad_packet_count++;
             diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
             diag.level = eros::Level::Type::WARN;
             diag.message = eros::eros_diagnostic::Message::DROPPING_PACKETS;
-            diag.description = "Unable to parse Packet: " + std::string(buffer, n);
+            logger->log_debug("Unable to parse Packet: " + std::string(buffer, n));
         }
         diagnostic = diag;
         return diag;
@@ -60,6 +61,8 @@ std::string NavXIMUDriver::pretty(std::string mode) {
     std::string str = "NavX IMU Node Driver";
     str += " Comm Device: " + comm_device_ + "\n";
     str += BaseIMUDriver::pretty(mode);
+    str += "Good Packets: " + std::to_string(good_packet_count) +
+           " Bad Packets: " + std::to_string(bad_packet_count) + "\n";
     return str;
 }
 bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
@@ -113,6 +116,7 @@ bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
     return true;
 }
 int NavXIMUDriver::readFromSerialPort(char* buffer, size_t size) {
+    logger->log_info("Read");
     return read(fd, buffer, size);
 }
 geometry_msgs::QuaternionStamped NavXIMUDriver::get_orientation() {

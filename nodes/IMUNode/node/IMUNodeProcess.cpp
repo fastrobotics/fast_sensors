@@ -43,7 +43,8 @@ std::vector<eros::eros_diagnostic::Diagnostic> IMUNodeProcess::check_programvari
     return diag_list;
 }
 std::string IMUNodeProcess::pretty() {
-    std::string str = "Node State: " + eros::Node::NodeStateString(get_nodestate());
+    std::string str = "Node State: " + eros::Node::NodeStateString(get_nodestate()) + "\n";
+    str += driver->pretty();
     return str;
 }
 }  // namespace fast_sensors
