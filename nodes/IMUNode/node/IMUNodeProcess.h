@@ -32,15 +32,8 @@ class IMUNodeProcess : public eros::BaseNodeProcess
         return;
     }
     std::string pretty() override;
-    geometry_msgs::QuaternionStamped get_orientation() {
-        return driver->get_orientation();
-    }
-    geometry_msgs::PoseStamped get_pose() {
-        geometry_msgs::PoseStamped pose;
-        auto orientation = get_orientation();
-        pose.header = orientation.header;
-        pose.pose.orientation = orientation.quaternion;
-        return pose;
+    sensor_msgs::Imu get_imu_data() {
+        return driver->get_imu_data();
     }
 
    private:

@@ -15,7 +15,7 @@
 #include <eros_utility/ConvertUtility.h>
 #include <eros_utility/PrettyUtility.h>
 
-#include "geometry_msgs/QuaternionStamped.h"
+#include "sensor_msgs/Imu.h"
 
 #pragma once
 namespace fast_sensors {
@@ -40,6 +40,6 @@ class IIMUDriver
 
     virtual bool finish() = 0;
     virtual std::string pretty(std::string mode = "") = 0;
-    virtual geometry_msgs::QuaternionStamped get_orientation() = 0;
+    virtual sensor_msgs::Imu get_imu_data() = 0;
 };
 }  // namespace fast_sensors

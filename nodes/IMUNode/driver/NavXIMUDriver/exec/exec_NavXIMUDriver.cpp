@@ -53,7 +53,7 @@ int main(int argc, char* argv[]) {
         logger->log_error("Error Initializing Driver.  Exiting.");
         return 1;
     }
-    double delta_time_sec = 0.01;
+    double delta_time_sec = 0.02;
     while (true) {
         auto current_time = std::chrono::system_clock::now();
         auto duration_in_seconds = std::chrono::duration<double>(current_time.time_since_epoch());

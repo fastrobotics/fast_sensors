@@ -115,7 +115,7 @@ eros::eros_diagnostic::Diagnostic IMUNode::finish_initialization() {
     std::string srv_nodestate_topic = "srv_nodestate_change";
     nodestate_srv =
         n->advertiseService(srv_nodestate_topic, &IMUNode::changenodestate_service, this);
-    imu_pose_pub = n->advertise<geometry_msgs::PoseStamped>(robot_namespace + "/robot/imu", 20);
+    imu_data_pub = n->advertise<sensor_msgs::Imu>(robot_namespace + "/robot/imu", 20);
     diag = process->update_diagnostic(eros::eros_diagnostic::DiagnosticType::COMMUNICATIONS,
                                       eros::Level::Type::INFO,
                                       eros::eros_diagnostic::Message::NOERROR,
@@ -142,7 +142,7 @@ bool IMUNode::run_loop2() {
 }
 bool IMUNode::run_loop3() {
     process->update(0.02, ros::Time::now().toSec());
-    imu_pose_pub.publish(process->get_pose());
+    imu_data_pub.publish(process->get_imu_data());
     return true;
     return true;
 }

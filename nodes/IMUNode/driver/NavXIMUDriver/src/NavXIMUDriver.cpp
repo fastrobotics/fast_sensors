@@ -44,7 +44,7 @@ eros::eros_diagnostic::Diagnostic NavXIMUDriver::update(double current_time_sec,
             diag.type = eros::eros_diagnostic::DiagnosticType::SOFTWARE;
             diag.level = eros::Level::Type::INFO;
             diag.message = eros::eros_diagnostic::Message::NOERROR;
-            diag.description = "";
+            diag.description = "Driver OK";
         }
         else {
             bad_packet_count++;
@@ -111,23 +111,37 @@ bool NavXIMUDriver::set_comm_device(std::string comm_device, int speed) {
         logger->log_error(strerror(errno));
         return false;
     }
+    // Send Configuration Request.  NOT Working!!!  Create Bug!
+    if (0) {
+        for (int i = 0; i < 50; ++i) {
+            unsigned char msg[] = {0x23, 0x70, 0x01, 0x0A, 0x0D};
+            printf("send: x%sx\n", msg);
+            write(fd, msg, sizeof(msg));
+            char buffer[100];
+
+            int n = readFromSerialPort(buffer, sizeof(buffer) - 1);
+            printf("%s\n", buffer);
+            usleep(0.5 * 1000000.0);
+        }
+    }
     fully_initialized = true;
     logger->log_notice("Sonar Array Node Driver Fully Initialized.");
     return true;
 }
 int NavXIMUDriver::readFromSerialPort(char* buffer, size_t size) {
-    logger->log_info("Read");
     return read(fd, buffer, size);
 }
-geometry_msgs::QuaternionStamped NavXIMUDriver::get_orientation() {
+sensor_msgs::Imu NavXIMUDriver::get_imu_data() {
+    sensor_msgs::Imu imu_data;
+    imu_data.header.stamp = latest_packet.time_stamp;
+    imu_data.header.frame_id = "imu";
     geometry_msgs::QuaternionStamped orientation;
-    orientation.header.stamp = latest_packet.time_stamp;
-    orientation.header.frame_id = "imu";
+
     tf2::Quaternion quat;
     quat.setRPY(latest_packet.roll_deg * M_PI / 180.0,
                 latest_packet.pitch_deg * M_PI / 180.0,
                 latest_packet.yaw_deg * M_PI / 180.0);
-    orientation.quaternion = tf2::toMsg(quat);
-    return orientation;
+    imu_data.orientation = tf2::toMsg(quat);
+    return imu_data;
 }
 }  // namespace fast_sensors

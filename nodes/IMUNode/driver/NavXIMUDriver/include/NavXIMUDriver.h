@@ -56,7 +56,7 @@ class NavXIMUDriver : public BaseIMUDriver
     NavXIMUPacketParser::ParsedPacket get_latest_packet() {
         return latest_packet;
     };
-    geometry_msgs::QuaternionStamped get_orientation();
+    sensor_msgs::Imu get_imu_data();
 
    private:
     std::string comm_device_;

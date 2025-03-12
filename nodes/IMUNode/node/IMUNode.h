@@ -76,6 +76,6 @@ class IMUNode : public eros::BaseNode
     eros::eros_diagnostic::Diagnostic read_launchparameters();
     IMUNodeProcess* process;
     actionlib::SimpleActionServer<eros::system_commandAction> system_command_action_server;
-    ros::Publisher imu_pose_pub;
+    ros::Publisher imu_data_pub;
 };
 }  // namespace fast_sensors

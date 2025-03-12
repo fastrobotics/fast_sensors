@@ -30,6 +30,7 @@ eros::eros_diagnostic::Diagnostic BaseIMUDriver::update(double current_time_sec,
         diag.message = eros::eros_diagnostic::Message::DROPPING_PACKETS;
         diag.description = "Expected Update Time: " + std::to_string(dt) +
                            " Actual Time: " + std::to_string(elap_time);
+        logger->log_diagnostic(diag);
         return diag;
     }
     // GCOVR_EXCL_STOP
@@ -43,7 +44,7 @@ eros::eros_diagnostic::Diagnostic BaseIMUDriver::update(double current_time_sec,
 std::string BaseIMUDriver::pretty(std::string mode) {
     std::string str;
     if (mode == "") {
-        str += pretty("simple");
+        str += BaseIMUDriver::pretty("simple");
         str += "\nRuntime: " + std::to_string(run_time) + " (sec).\n";
     }
     else if (mode == "simple") {
