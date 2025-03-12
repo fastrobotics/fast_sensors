@@ -46,7 +46,7 @@ jobs:
         catkin_make tests
 
     - name: Run Tests
-     run: |
+      run: |
        cd ../../
        source /opt/ros/noetic/setup.bash
        catkin_make -j1 run_tests_fast_sensors
