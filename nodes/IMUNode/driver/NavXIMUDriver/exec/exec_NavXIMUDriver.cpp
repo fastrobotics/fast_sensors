@@ -18,6 +18,7 @@ void signalinterrupt_handler(int sig) {
 int main(int argc, char* argv[]) {
     signal(SIGINT, signalinterrupt_handler);
     signal(SIGTERM, signalinterrupt_handler);
+    ros::Time::init();
     std::string logger_threshold = "DEBUG";
     std::string device = "/dev/ttyUSB0";
     for (;;) {
@@ -61,7 +62,7 @@ int main(int argc, char* argv[]) {
         driver.update(current_time_sec, delta_time_sec);
         usleep(delta_time_sec * 1000000);
 
-        // logger->log_debug(driver.pretty());
+        logger->log_debug(driver.pretty());
     }
 
     logger->log_debug("NavXIMU Driver Finished.");

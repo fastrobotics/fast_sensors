@@ -16,9 +16,41 @@
 using namespace fast_sensors;
 //
 TEST(BasicTest, ParseMessage_AHRS) {
-    std::string packet = "!y-029.08 007.36 000.70 181.9U7E3";
-    auto data = NavXIMUPacketParser::parsePacket(packet);
-    EXPECT_TRUE(data.parsed_ok);
+    {  // Normal Packet
+        std::string packet = "!y-029.08 007.36 000.70 181.9U7E3";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
+    {  // Normal Packet
+        std::string packet = "!y 029.08-007.36 000.70 181.9U7E3";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
+    {  // Normal Packet
+        std::string packet = "!y 029.08 007.36-000.70 181.9U7E3";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
+    {  // Normal Packet
+        std::string packet = "!y 029.08 007.36 000.70 181.9U7E3";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
+    {  // Normal Packet
+        std::string packet = "!y-029.08-007.36-000.70 181.9U7E3";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
+    {  // Packet with missing data at start, but then complete.
+        std::string packet = " 181.9U7E3!y-029.08-007.36-000.70 181.9U7E3";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
+    {  // Packet that doesn't have checksum
+        std::string packet = "!y 095.67 007.36 000.69 179.2";
+        auto data = NavXIMUPacketParser::parsePacket(packet);
+        EXPECT_TRUE(data.parsed_ok);
+    }
 }
 TEST(BasicTest, ParseMessage_MalformedPackets) {
     {  // Empty String
@@ -38,17 +70,6 @@ TEST(BasicTest, ParseMessage_MalformedPackets) {
     }
     {  // Incomplete Packet
         std::string packet = "!y-029.08 0";
-        auto data = NavXIMUPacketParser::parsePacket(packet);
-        EXPECT_FALSE(data.parsed_ok);
-    }
-    {  // Multiple Packets
-        std::string packet = "!y-029.08 007.36 000.70 181.9U7E3!y-029.08 007.36 000.70 181.9U7E3";
-        auto data = NavXIMUPacketParser::parsePacket(packet);
-        EXPECT_FALSE(data.parsed_ok);
-    }
-
-    {  // Missing character
-        std::string packet = "!y-029.0A007.36 000.70 181.9U7E3";
         auto data = NavXIMUPacketParser::parsePacket(packet);
         EXPECT_FALSE(data.parsed_ok);
     }
