@@ -16,7 +16,7 @@ void heartbeat_Callback(const eros::heartbeat& msg) {
     latest_heartbeat = msg;
     heartbeat_count++;
 }
-TEST(GPSHatNode, TestBasics) {
+TEST(IMUNode, TestBasics) {
     ros::NodeHandle nh("~");
     Logger* logger = new Logger("DEBUG", "test_IMUNode");
     logger->enable_ROS_logger();
@@ -26,7 +26,7 @@ TEST(GPSHatNode, TestBasics) {
     EXPECT_NE(ros::topic::waitForMessage<eros::heartbeat>(heartbeat_topic, ros::Duration(10)),
               nullptr);
     EXPECT_EQ(1, sub.getNumPublishers());
-    sleep(1.0);  // Wait for GPSHatNode to Start.
+    sleep(1.0);  // Wait for IMU Node to Start.
     EXPECT_TRUE(heartbeat_count > 0);
 
     logger->log_warn("Testing Unsupported Commands...");

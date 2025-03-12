@@ -1,7 +1,3 @@
 catkin_add_gtest(test_NavXIMUPacketParser test_NavXIMUPacketParser.cpp)
 target_link_libraries(test_NavXIMUPacketParser ${catkin_LIBRARIES} ${Boost_LIBRARIES} logger navXIMUPacketParser)
 add_dependencies(test_NavXIMUPacketParser eros_generate_messages_cpp)
-
-#catkin_add_gtest(test_NavXIMUDriver test_NavXIMUDriver.cpp)
-#target_link_libraries(test_NavXIMUDriver ${catkin_LIBRARIES} ${Boost_LIBRARIES} logger navXIMUDriver)
-#add_dependencies(test_NavXIMUDriver eros_generate_messages_cpp)

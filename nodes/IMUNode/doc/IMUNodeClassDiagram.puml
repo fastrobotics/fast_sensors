@@ -8,10 +8,7 @@ package eros {
   class BaseNodeProcess
 }
 
-package ros_hats {
-  namespace gps_utility {
-    class UTMConversion
-  }
+package fast_sensors {
   class IMUNode  {
       +const std::string BASE_NODE_NAME
       +const uint16_t MAJOR_RELEASE_VERSION

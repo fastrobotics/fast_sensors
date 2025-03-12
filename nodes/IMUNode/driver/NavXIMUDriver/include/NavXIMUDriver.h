@@ -34,7 +34,7 @@ class NavXIMUDriver : public BaseIMUDriver
     NavXIMUDriver();
     virtual ~NavXIMUDriver();
     /**
-     * @brief Initialize GPS Hat Driver
+     * @brief Initialize NavX IMU Driver
      *
      * @param logger
      * @return true

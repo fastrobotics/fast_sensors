@@ -131,7 +131,7 @@ eros::eros_diagnostic::Diagnostic IMUNode::finish_initialization() {
     diag = process->update_diagnostic(eros::eros_diagnostic::DiagnosticType::POSE,
                                       eros::Level::Type::WARN,
                                       eros::eros_diagnostic::Message::INITIALIZING,
-                                      "GPS Initializing...");
+                                      "Node Initializing...");
     return diag;
 }
 bool IMUNode::run_loop1() {
