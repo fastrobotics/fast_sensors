@@ -32,9 +32,17 @@ eros::eros_diagnostic::Diagnostic IMUNodeProcess::update(double t_dt, double t_r
     return diag;
 }
 std::vector<eros::eros_diagnostic::Diagnostic> IMUNodeProcess::new_commandmsg(eros::command msg) {
-    (void)msg;
-    std::vector<eros::eros_diagnostic::Diagnostic> diag_list;
-    logger->log_warn("No Command Messages Supported at this time.");
+    std::vector<eros::eros_diagnostic::Diagnostic> diag_list = base_new_commandmsg(msg);
+    if (diag_list.size() == 0) {
+        // No currently supported commands.
+    }
+    else {
+        for (auto diag : diag_list) {
+            if (diag.level >= eros::Level::Type::INFO) {
+                diagnostic_manager.update_diagnostic(diag);
+            }
+        }
+    }
     return diag_list;
 }
 std::vector<eros::eros_diagnostic::Diagnostic> IMUNodeProcess::check_programvariables() {
